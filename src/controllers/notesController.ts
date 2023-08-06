@@ -18,7 +18,7 @@ notesRouter.post("/", (req, res) => {
 notesRouter.delete("/:id", (req, res) => {
   const id = parseInt(req.params.id);
   notesService.removeNoteById(id);
-  return res.status(204).end();
+  return  res.status(200).json({ message: "Note has been successfully deleted" });
 });
 
 notesRouter.patch("/:id", (req, res) => {
