@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { notesRouter } from "./controllers/notesController";
+import { notesRouter } from "./routes/notesRoutes";
 import { log } from "console";
 
 const app = express();
