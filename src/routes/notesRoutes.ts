@@ -15,6 +15,11 @@ notesRouter.post("/", (req, res) => {
   return res.status(201).json(createdNote);
 });
 
+notesRouter.get("/stats", (req, res) => {
+  const stats = notesService.getStatistics();
+  return res.status(200).json(stats);
+});
+
 notesRouter.delete("/:id", (req, res) => {
   const id = parseInt(req.params.id);
   notesService.removeNoteById(id);
@@ -51,8 +56,5 @@ notesRouter.get("/", (req, res) => {
   return res.status(200).json(notes);
 });
 
-notesRouter.get("/stats", (req, res) => {
-  const stats = notesService.getStatistics();
-  return res.status(200).json(stats);
-});
+
 

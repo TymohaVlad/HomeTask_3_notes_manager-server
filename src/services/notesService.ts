@@ -35,8 +35,24 @@ export const notesService = {
   },
   getAllNotes: () => notesRepository.getAllNotes(),
   getStatistics: () => {
-    const archivedNotesCount = notesRepository.getAllNotes().filter((note) => note.archived).length;
-    const activeNotesCount = notesRepository.getAllNotes().length - archivedNotesCount;
-    return { archivedNotesCount, activeNotesCount };
+    const allNotes = notesRepository.getAllNotes();
+    const statistics: { [category: string]: { archived: number; active: number } } = {};
+    
+    allNotes.forEach((note) => {
+      const category = note.category;
+      if (category) {
+        if (!statistics[category]) {
+          statistics[category] = { archived: 0, active: 0 };
+        }
+
+        if (note.archived) {
+          statistics[category].archived++;
+        } else {
+          statistics[category].active++;
+        }
+      }
+    });
+
+    return statistics;
   },
 };
