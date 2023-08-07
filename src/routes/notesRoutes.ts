@@ -7,7 +7,10 @@ export const notesRouter = express.Router();
 
 notesRouter.post("/", (req, res) => {
   const note = req.body as Note;
-  if (!validateNote(note)) {
+  
+  try {
+    validateNote(note);
+  } catch (error) {
     return res.status(400).json({ error: "Invalid note format" });
   }
 
@@ -26,19 +29,26 @@ notesRouter.delete("/:id", (req, res) => {
   return  res.status(200).json({ message: "Note has been successfully deleted" });
 });
 
-notesRouter.patch("/:id", (req, res) => {
+notesRouter.patch('/:id', (req, res) => {
   const id = parseInt(req.params.id);
   const updatedNote = req.body as Note;
-  if (!validateNote(updatedNote)) {
-    return res.status(400).json({ error: "Invalid note format" });
+  
+  try {
+    validateNote(updatedNote);
+  } catch (error) {
+    return res.status(400).json({ error: 'Invalid note format' });
   }
 
-  const note = notesService.updateNoteById(id, updatedNote);
-  if (!note) {
-    return res.status(404).json({ error: "Note not found" });
-  }
+  try {
+    const note = notesService.updateNoteById(id, updatedNote);
+    if (!note) {
+      return res.status(404).json({ error: 'Note not found' });
+    }
 
-  return res.status(200).json(note);
+    return res.status(200).json(note);
+  } catch (error) {
+    return res.status(500).json({ error: 'Server error' });
+  }
 });
 
 notesRouter.get("/:id", (req, res) => {
